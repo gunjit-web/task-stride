@@ -11,7 +11,7 @@ Manage projects, assign tasks, track progress, and collaborate with your team â€
 | Service  | URL |
 |----------|-----|
 | Frontend | https://frontend-production-c979.up.railway.app |
-| Backend  | https://backend-production-b0cb.up.railway.app  |
+| Backend  | https://task-stride-backend.up.railway.app  |
 
 **Demo credentials:** `demo@taskstride.app` / `demo123`
 
