@@ -5,11 +5,11 @@ const navIcon = (color) => ({ width: 18, height: 18, strokeWidth: 1.75, color })
 
 const initials = (name) => name ? name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0,2) : '?';
 
-export default function Sidebar({ view, setView, projects, onNewProject }) {
+export default function Sidebar({ view, setView, projects, onNewProject, isOpen, onClose }) {
   const { user, logout } = useAuth();
 
   return (
-    <div className="sidebar">
+    <div className={`sidebar${isOpen ? ' open' : ''}`}>
       <div className="sidebar-logo">
         <div className="logo-icon" style={{width:32,height:32}}><Zap style={{width:18,height:18}}/></div>
         <div className="logo-text" style={{fontSize:18}}>Task<span>Stride</span></div>

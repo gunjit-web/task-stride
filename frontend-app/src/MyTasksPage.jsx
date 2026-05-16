@@ -85,6 +85,7 @@ export default function MyTasksPage({ setView }) {
           </div>
         ) : (
           <div className="card" style={{padding:0,overflow:'hidden'}}>
+            <div style={{overflowX:'auto'}}>
             <table>
               <thead>
                 <tr>
@@ -128,6 +129,7 @@ export default function MyTasksPage({ setView }) {
                 })}
               </tbody>
             </table>
+            </div>
           </div>
         )}
       </div>

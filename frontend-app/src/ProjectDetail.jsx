@@ -300,6 +300,7 @@ export default function ProjectDetail({ projectId, setView, onProjectUpdated }) 
                 <div className="empty-title">No tasks found</div>
               </div>
             ) : (
+              <div style={{overflowX:'auto'}}>
               <table>
                 <thead>
                   <tr>
@@ -340,6 +341,7 @@ export default function ProjectDetail({ projectId, setView, onProjectUpdated }) 
                   })}
                 </tbody>
               </table>
+              </div>
             )}
           </div>
         )}

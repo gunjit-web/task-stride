@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Menu } from 'lucide-react';
 import { AuthProvider, useAuth } from './AuthContext';
 import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
@@ -16,6 +17,9 @@ function AppContent() {
   const [view, setView] = useState('dashboard');
   const [projects, setProjects] = useState([]);
   const [projectsLoading, setProjectsLoading] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  useEffect(() => { setSidebarOpen(false); }, [view]);
 
   useEffect(() => {
     if (user) {
@@ -57,8 +61,28 @@ function AppContent() {
 
   return (
     <div className="app-layout">
-      <Sidebar view={view} setView={setView} projects={projects} onNewProject={() => setView('projects')}/>
+      <Sidebar
+        view={view}
+        setView={setView}
+        projects={projects}
+        onNewProject={() => setView('projects')}
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+      <div
+        className={`sidebar-overlay${sidebarOpen ? ' open' : ''}`}
+        onClick={() => setSidebarOpen(false)}
+        aria-hidden="true"
+      />
       <div className="main-content">
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open menu"
+          style={{position:'absolute',top:14,left:14,zIndex:70}}
+        >
+          <Menu size={20} strokeWidth={1.75} />
+        </button>
         {renderMain()}
       </div>
     </div>

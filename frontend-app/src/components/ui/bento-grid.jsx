@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils'
 
 export function BentoGrid({ items = [] }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 stagger-in">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 stagger-in">
       {items.map((item, index) => (
         <div
           key={index}
@@ -13,7 +13,7 @@ export function BentoGrid({ items = [] }) {
             'hover:shadow-[0_2px_12px_rgba(255,255,255,0.03)]',
             'hover:-translate-y-0.5 will-change-transform',
             item.onClick ? 'cursor-pointer' : '',
-            item.colSpan === 2 ? 'md:col-span-2' : 'col-span-1',
+            item.colSpan === 2 ? 'col-span-2' : 'col-span-1',
             item.hasPersistentHover &&
               'shadow-[0_2px_12px_rgba(255,255,255,0.03)] -translate-y-0.5'
           )}
