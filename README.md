@@ -8,9 +8,12 @@ Manage projects, assign tasks, track progress, and collaborate with your team �
 
 ## Live Demo
 
-| Service | URL |
-|---------|-----|
-| Live Application Url | https://task-strides-production.up.railway.app/ |
+| Service  | URL |
+|----------|-----|
+| Frontend | https://frontend-production-c979.up.railway.app |
+| Backend  | https://backend-production-b0cb.up.railway.app  |
+
+**Demo credentials:** `demo@taskstride.app` / `demo123`
 
 
 ---
@@ -164,33 +167,51 @@ npm run dev
 
 ## Deployment on Railway
 
-### Backend
+The repo ships with `railway.toml` configs in `backend/` and `frontend-app/`. Two services in one Railway project, deployed via CLI or dashboard.
 
-1. Go to [railway.app](https://railway.app) → New Project → Deploy from GitHub Repo
-2. Select the `backend/` folder (or set Root Directory to `/backend`)
-3. Set environment variables:
+### Backend service
+
+1. New Service → connect this GitHub repo
+2. **Settings → Source → Root Directory:** `/backend`
+3. **Settings → Networking → Target Port:** `3001` → Generate Domain
+4. **Variables:**
    ```
-   JWT_SECRET=your-long-random-secret-here
-   FRONTEND_URL=https://your-frontend.railway.app
+   JWT_SECRET=<48-byte random hex>
    PORT=3001
+   DATABASE_URL=file:./taskstride.db
+   FRONTEND_URLS=<paste frontend URL after step below>
    ```
-4. Railway auto-detects Node.js and runs `npm start`
 
-### Frontend
+### Frontend service
 
-1. New Service → GitHub → select `frontend-app/` folder
-2. Set environment variables:
+1. New Service in the same project → connect the same repo
+2. **Settings → Source → Root Directory:** `/frontend-app`
+3. **Settings → Networking → Generate Domain**
+4. **Variables** (must be set **before** first build — Vite inlines them):
    ```
-   VITE_API_URL=https://your-backend.railway.app/api
+   VITE_API_URL=https://<backend-domain>/api
    ```
-3. Build command: `npm run build`
-4. Start command: `npx serve dist -p $PORT`
+5. Trigger redeploy
 
-### Database
+### Wire CORS
 
-The app uses **LibSQL** with a local file database (`taskstride.db`). For Railway persistence:
-- The DB file is created automatically on first run
-- For production durability, consider upgrading to **Turso** (hosted LibSQL) and setting `DATABASE_URL` to the Turso connection string
+After both domains exist, update backend `FRONTEND_URLS=https://<frontend-domain>` and redeploy backend.
+
+### CLI alternative
+
+```bash
+brew install railway && railway login
+cd backend       && railway add --service backend  && railway up --service backend  && railway domain
+cd ../frontend-app && railway add --service frontend && railway up --service frontend && railway domain
+```
+
+### Database persistence
+
+The app uses **LibSQL** with a local file (`taskstride.db`). **Railway containers are ephemeral** — the DB resets on every redeploy.
+
+For real persistence pick one:
+- **Railway Volume** — mount a Volume in backend service and set `DATABASE_URL=file:/data/taskstride.db`
+- **Turso** (hosted LibSQL, generous free tier) — set `DATABASE_URL` to the Turso connection string
 
 ---
 
